@@ -1,0 +1,5 @@
+{
+    "require": {
+        "ahmedkhan847/cloudwaysapi-phpsdk": "dev-master"
+    }
+}
