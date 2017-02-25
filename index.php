@@ -21,7 +21,7 @@ if(isset($_POST['submit'])){
 
 echo $serverid = $_POST['server'];
 echo $appservice = $_POST['app'];
-echo $actions = $_POST['layout_select'];
+echo $actions = $_POST['action'];
 
 
 $value = ['server_id' => $serverid, 'service' => $appservice, 'state' => $actions];
@@ -113,7 +113,7 @@ echo "</pre>";
  
               <div class="col-md-4">
  
-                <select name="layout_select" id="layout_select" class="form-control disable">
+                <select name="action" id="action" class="form-control disable">
                     <!--<option value="Start">Start</option>
                     <option value="Stop">Stop</option>
                     <option value="Restart">Restart</option>-->
@@ -156,16 +156,20 @@ var actionbyservice = {
     elasticsearch: ["start", "stop"],
     memcached: ["restart"],
     varnish: ["start", "stop", "purge"],
+    mysql: ["restart"],
+    nginx: ["restart"],
+    redisl: ["start","stop","restart"],
+    php-fpm: ["restart"],
 }
 
     function changeaction(value) {
-        if (value.length == 0) document.getElementById("layout_select").innerHTML = "<option></option>";
+        if (value.length == 0) document.getElementById("action").innerHTML = "<option></option>";
         else {
             var catOptions = "";
             for (categoryId in actionbyservice[value]) {
                 catOptions += "<option>" + actionbyservice[value][categoryId] + "</option>";
             }
-            document.getElementById("layout_select").innerHTML = catOptions;
+            document.getElementById("action").innerHTML = catOptions;
         }
     }
 </script>
