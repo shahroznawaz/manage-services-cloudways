@@ -6,7 +6,6 @@ $service = new Service();
 $service->SetEmail("mustaasam.saleem@cloudways.com");
 $service->SetKey("DyhmAr7tGrajOCXys1NS94mEjfAeZ3");
 
-
 $servers = $service->getServers();
 foreach($servers->servers as $server){
     $serverId = $server->id;
@@ -16,29 +15,17 @@ $value = ['server_id' => $serverId];
 $ser = $service->getServices($value);
 unset($ser->services->status->elasticsearch_enabled,$ser->services->status->fpm_enabled,$ser->services->status->varnish_enabled,$ser->services->status->redis_enabled);
 
-
 if(isset($_POST['submit'])){
 
-echo $serverid = $_POST['server'];
-echo $appservice = $_POST['app'];
-echo $actions = $_POST['action'];
-
+$serverid = $_POST['server'];
+$appservice = $_POST['app'];
+$actions = $_POST['action'];
 
 $value = ['server_id' => $serverid, 'service' => $appservice, 'state' => $actions];
-
-
-// die("aby ja na");
-
 $doaction = $service->manageServices($value);
-echo "<pre>";
-var_dump($doaction->service_status->status);
-echo "</pre>";
-// if($doaction){
-//   echo $appservice . "has sent some actions";
+$response = $doaction->service_status->status;
+
  }
-// }
-
-
 
 ?>
 
@@ -61,6 +48,11 @@ echo "</pre>";
     <div class="row">
  
       <div class="col-md-10">
+
+      <?php
+     if(isset($response)){
+       echo "<div class='alert alert-success'><strong> Your service is now ".$response."</strong></div>";
+     }?>
  
         <form class="form-horizontal" method="post" action="index.php">
  
@@ -99,7 +91,7 @@ echo "</pre>";
  
               <div class="col-md-4">
  
-                <select id="app" name="app" class="form-control disable" onChange="changeaction(this.value);">
+                <select id="app" name="app" class="form-control disable" onChange="changecat(this.value);">
  
                 </select>
  
@@ -139,7 +131,7 @@ echo "</pre>";
               </div>
  
             </div>
- 
+
           </fieldset>
  
         </form>
@@ -151,31 +143,26 @@ echo "</pre>";
   </div>
 
 <script>
-var actionbyservice = {
+var serveractions = {
     apache2: ["restart"],
     elasticsearch: ["start", "stop"],
     memcached: ["restart"],
-    varnish: ["start", "stop", "purge"],
+    varnish: ["start", "stop"],
     mysql: ["restart"],
     nginx: ["restart"],
-    redisl: ["start","stop","restart"],
-    php-fpm: ["restart"],
 }
 
-    function changeaction(value) {
+    function changecat(value) {
         if (value.length == 0) document.getElementById("action").innerHTML = "<option></option>";
         else {
             var catOptions = "";
-            for (categoryId in actionbyservice[value]) {
-                catOptions += "<option>" + actionbyservice[value][categoryId] + "</option>";
+            for (categoryId in serveractions[value]) {
+                catOptions += "<option>" + serveractions[value][categoryId] + "</option>";
             }
             document.getElementById("action").innerHTML = catOptions;
         }
     }
 </script>
-
-
-
 
 
   <script type="text/javascript">
