@@ -3,7 +3,7 @@ require "vendor/autoload.php";
 
 use Cloudways\Server\Service\Service;
 $service = new Service();
-$service->SetEmail("mustaasam.saleem@cloudways.com");
+$service->SetEmail("shahroze.nawaz@cloudways.com");
 $service->SetKey("DyhmAr7tGrajOCXys1NS94mEjfAeZ3");
 
 $servers = $service->getServers();
